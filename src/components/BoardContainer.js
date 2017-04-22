@@ -51,11 +51,11 @@ class BoardContainer extends Component {
       {
         data.lanes.map((lane) => {
           const {id, ...otherProps} = lane
-          const {tagStyle, draggable, handleDragStart, handleDragEnd, onCardClick, onLaneScroll, laneSortFunction} = this.props
+          const {laneStyle, tagStyle, draggable, handleDragStart, handleDragEnd, onCardClick, onLaneScroll, laneSortFunction} = this.props
           return <Lane key={`${id}`}
             id={id}
             {...otherProps}
-            {...{tagStyle, draggable, handleDragStart, handleDragEnd, onCardClick, onLaneScroll, laneSortFunction}}
+            {...{laneStyle, tagStyle, draggable, handleDragStart, handleDragEnd, onCardClick, onLaneScroll, laneSortFunction}}
           />
         })}
     </BoardDiv>

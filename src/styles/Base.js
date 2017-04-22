@@ -3,24 +3,25 @@ import styled from 'styled-components'
 export const BoardDiv = styled.div`
   background-color: #23719F;
   overflow-y: hidden;
-  padding: 5px;
   font: 14px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
   color: #393939;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   height: 100vh;
+  padding: 4px;
 `
 
 export const Section = styled.section`
-  background-color: #E3E3E3;
-  border-radius: 3px;
-  margin: 5px 5px;
-  padding: 10px;
-  min-width: 250px;
-  height: auto;
-  max-height: 95%;
-  overflow-y: auto;
+  ${props => props.laneStyle ? props.laneStyle
+    : 'background-color: #E3E3E3;' +
+    'border-radius: 3px;' +
+    'margin: 5px 5px;' +
+    'padding: 10px;' +
+    'min-width: 250px;' +
+    'height: auto;' +
+    'max-height: 95%;' +
+    'overflow-y: auto;'}
 `
 
 export const Header = styled.header`
@@ -35,7 +36,7 @@ export const Title = styled.span`
   font-size: 15px;
   line-height: 18px;
   cursor: grab;
-  width: 80%;
+  width: 100%;
 `
 
 export const RightContent = styled.span`
@@ -71,19 +72,18 @@ export const Placeholder = styled.section`
   background-color: #CCC;
   margin: 5px 0px;
   padding: 10px;
-  min-width: 226px;
   height: 45px;
   max-height: 95%;
   overflow-y: auto;
 `
 
 export const CardHeader = styled(Header)`
-  border-bottom: 1px solid #eee;
-  padding-bottom: 6px;
+  padding-bottom: 2px;
 `
 
 export const CardTitle = styled(Title)`
  font-size: 14px;
+ color: #333;
 `
 
 export const CardRightContent = styled(RightContent)`
@@ -92,7 +92,7 @@ export const CardRightContent = styled(RightContent)`
 
 export const Detail = styled.div`
   font-size: 12px;
-  color: #4d4d4d;
+  color: #aaa;
 `
 
 export const Footer = styled.div`

@@ -11,8 +11,8 @@ import { findDOMNode } from 'react-dom'
 
 const laneActions = require('../actions/LaneActions')
 
-const CARD_HEIGHT = 66
-const CARD_MARGIN = 10
+const CARD_HEIGHT = 50
+const CARD_MARGIN = 5
 const OFFSET_HEIGHT = 15
 
 class Lane extends Component {
@@ -125,8 +125,8 @@ class Lane extends Component {
 
   render () {
     const {loading} = this.state
-    const {id, title, label, ...otherProps} = this.props
-    return <Section {...otherProps} key={id} innerRef={this.laneDidMount}>
+    const {id, title, label, laneStyle, ...otherProps} = this.props
+    return <Section {...otherProps} key={id} innerRef={this.laneDidMount} laneStyle={laneStyle}>
       <Header>
         <Title>{title}</Title>
         <RightContent>{label}</RightContent>
@@ -145,7 +145,8 @@ Lane.propTypes = {
   label: PropTypes.string,
   onLaneScroll: PropTypes.func,
   handleDragStart: PropTypes.func,
-  handleDragEnd: PropTypes.func
+  handleDragEnd: PropTypes.func,
+  laneStyle: PropTypes.object
 }
 
 const cardTarget = {

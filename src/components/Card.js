@@ -18,7 +18,6 @@ class Card extends Component {
           <CardWrapper key={id} data-id={id} {...otherProps} style={{opacity: opacity}}>
             <CardHeader>
               <CardTitle>{title}</CardTitle>
-              <CardRightContent>{label}</CardRightContent>
             </CardHeader>
             <Detail>{description}</Detail>
             {tags && <Footer>
