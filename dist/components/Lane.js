@@ -34,6 +34,8 @@ var _update2 = _interopRequireDefault(_update);
 
 var _DragType = require('../helpers/DragType');
 
+var _reactDom = require('react-dom');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -45,6 +47,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var laneActions = require('../actions/LaneActions');
+
+var CARD_HEIGHT = 60;
+var CARD_MARGIN = 10;
+var OFFSET_HEIGHT = 15;
 
 var Lane = function (_Component) {
   _inherits(Lane, _Component);
@@ -60,7 +66,12 @@ var Lane = function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Lane.__proto__ || Object.getPrototypeOf(Lane)).call.apply(_ref, [this].concat(args))), _this), _this.state = { loading: false, currentPage: _this.props.currentPage, cards: _this.props.cards }, _this.handleScroll = function (evt) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Lane.__proto__ || Object.getPrototypeOf(Lane)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      loading: false,
+      currentPage: _this.props.currentPage,
+      cards: _this.props.cards,
+      placeholderIndex: -1
+    }, _this.handleScroll = function (evt) {
       var node = evt.target;
       var elemScrolPosition = node.scrollHeight - node.scrollTop - node.clientHeight;
       var onLaneScroll = _this.props.onLaneScroll;
@@ -102,31 +113,38 @@ var Lane = function (_Component) {
           onCardClick = _this$props.onCardClick,
           id = _this$props.id;
 
+
+      var cardList = _this.sortCards(_this.state.cards, laneSortFunction).map(function (card, idx) {
+        return _react2.default.createElement(_Card2.default, { id: card.id,
+          key: card.id,
+          index: idx,
+          listId: id,
+          draggable: _this.props.draggable,
+          handleDragStart: _this.props.handleDragStart,
+          handleDragEnd: _this.props.handleDragEnd,
+          title: card.title,
+          tags: card.tags,
+          tagStyle: _this.props.tagStyle,
+          moveCard: _this.moveCard,
+          removeCard: _this.removeCard,
+          label: card.label,
+          description: card.description,
+          onClick: function onClick() {
+            return onCardClick && onCardClick(card.id, card.metadata);
+          } });
+      });
+
+      if (_this.state.placeholderIndex > -1) {
+        cardList.splice(_this.state.placeholderIndex, 0, _react2.default.createElement(_Base.Placeholder, { key: 'placeholder' }));
+      }
+
       return connectDropTarget(_react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
           _Base.DraggableList,
           null,
-          _this.sortCards(_this.state.cards, laneSortFunction).map(function (card, idx) {
-            return _react2.default.createElement(_Card2.default, { id: card.id,
-              key: card.id,
-              index: idx,
-              listId: id,
-              draggable: _this.props.draggable,
-              handleDragStart: _this.props.handleDragStart,
-              handleDragEnd: _this.props.handleDragEnd,
-              title: card.title,
-              tags: card.tags,
-              tagStyle: _this.props.tagStyle,
-              moveCard: _this.moveCard,
-              removeCard: _this.removeCard,
-              label: card.label,
-              description: card.description,
-              onClick: function onClick() {
-                return onCardClick && onCardClick(card.id, card.metadata);
-              } });
-          })
+          cardList
         )
       ));
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -146,6 +164,9 @@ var Lane = function (_Component) {
     value: function componentWillReceiveProps(nextProps) {
       if (!this.sameCards(this.props.cards, nextProps.cards)) {
         this.setState({ cards: nextProps.cards, currentPage: nextProps.currentPage });
+      }
+      if (!nextProps.isOver) {
+        this.setState({ placeholderIndex: -1 });
       }
     }
   }, {
@@ -205,15 +226,45 @@ var cardTarget = {
   drop: function drop(props, monitor, component) {
     var id = props.id;
 
+    var index = component.state.placeholderIndex;
     var draggedObj = monitor.getItem();
     if (id !== draggedObj.listId) {
-      props.actions.addCard({ laneId: id, card: draggedObj.card });
+      props.actions.addCard({
+        laneId: id,
+        card: draggedObj.card,
+        index: index });
     } else {
       props.actions.updateCards({ laneId: id, cards: component.state.cards });
     }
+    component.setState({ placeholderIndex: -1 });
     return {
       listId: id
     };
+  },
+  hover: function hover(props, monitor, component) {
+    var id = props.id;
+
+    var draggedObj = monitor.getItem();
+    if (id === draggedObj.listId) {
+      return;
+    }
+
+    var placeholderIndex = getPlaceholderIndex(monitor.getClientOffset().y, (0, _reactDom.findDOMNode)(component).scrollTop);
+    component.setState({ placeholderIndex: placeholderIndex });
+
+    return monitor.isOver();
+
+    function getPlaceholderIndex(y, scrollY) {
+      // shift placeholder if y position more than card height / 2
+      var yPos = y - OFFSET_HEIGHT + scrollY;
+      var placeholderIndex = void 0;
+      if (yPos < CARD_HEIGHT / 2) {
+        placeholderIndex = -1; // place at the start
+      } else {
+        placeholderIndex = Math.floor((yPos - CARD_HEIGHT / 2) / (CARD_HEIGHT + CARD_MARGIN));
+      }
+      return placeholderIndex;
+    }
   }
 };
 

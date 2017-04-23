@@ -34,11 +34,18 @@ var LaneHelper = {
 
   appendCardsToLane: function appendCardsToLane(state, _ref3) {
     var laneId = _ref3.laneId,
-        newCards = _ref3.newCards;
+        newCards = _ref3.newCards,
+        index = _ref3.index;
 
     var lanes = state.lanes.map(function (lane) {
       if (lane.id === laneId) {
-        lane.cards = [].concat(_toConsumableArray(lane.cards), _toConsumableArray(newCards));
+        if (index !== undefined) {
+          var _lane$cards;
+
+          (_lane$cards = lane.cards).splice.apply(_lane$cards, [index, 0].concat(_toConsumableArray(newCards)));
+        } else {
+          lane.cards = [].concat(_toConsumableArray(lane.cards), _toConsumableArray(newCards));
+        }
       }
       return lane;
     });
@@ -47,9 +54,10 @@ var LaneHelper = {
 
   appendCardToLane: function appendCardToLane(state, _ref4) {
     var laneId = _ref4.laneId,
-        card = _ref4.card;
+        card = _ref4.card,
+        index = _ref4.index;
 
-    var updatedLanes = LaneHelper.appendCardsToLane(state, { laneId: laneId, newCards: [card] });
+    var updatedLanes = LaneHelper.appendCardsToLane(state, { laneId: laneId, newCards: [card], index: index });
     return _extends({}, state, updatedLanes);
   },
 

@@ -62,9 +62,10 @@ var Card = function (_Component) {
           otherProps = _objectWithoutProperties(_props, ['id', 'title', 'description', 'label', 'tags', 'connectDragSource', 'connectDropTarget', 'isDragging']);
 
       var opacity = isDragging ? 0 : 1;
+      var background = isDragging ? '#CCC' : '#E3E3E3';
       return connectDragSource(connectDropTarget(_react2.default.createElement(
         'div',
-        null,
+        { style: { background: background } },
         _react2.default.createElement(
           _Base.CardWrapper,
           _extends({ key: id, 'data-id': id }, otherProps, { style: { opacity: opacity } }),
