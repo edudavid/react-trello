@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const BoardDiv = styled.div`
   background-color: #23719F;
   overflow-y: hidden;
-  padding: 5px;
+  padding: 3px;
   font: 14px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
   color: #393939;
   display: flex;
@@ -15,11 +15,10 @@ export const BoardDiv = styled.div`
 export const Section = styled.section`
   background-color: #E3E3E3;
   border-radius: 3px;
-  margin: 5px 5px;
-  padding: 10px;
-  min-width: 250px;
-  height: auto;
-  max-height: 95%;
+  margin: 3px;
+  padding: 4px;
+  width: 20%;
+  height: 95%;
   overflow-y: auto;
 `
 
@@ -50,21 +49,31 @@ export const DraggableList = styled.div`
 
 export const CardWrapper = styled.article`
   border-radius: 3px;
-  margin: 10px 0px;  
+  margin: 10px 0px;
   border-bottom: 1px solid #CCC;
   padding: 6px 8px;
   cursor: pointer;
   transition: all .3s cubic-bezier(0.23, 1, 0.32, 1);;
   background-color: #FFF;
   max-width: 250px;
-  
+
   &:hover {
     background-color: #F0F0F0;
   }
-  
+
   &.is-moving {
     background-color: rgba(black, 0.8);
   }
+`
+
+export const Placeholder = styled.section`
+  background-color: #CCC;
+  margin: 5px 0px;
+  padding: 10px;
+  min-width: 226px;
+  height: 45px;
+  max-height: 95%;
+  overflow-y: auto;
 `
 
 export const CardHeader = styled(Header)`
@@ -82,7 +91,7 @@ export const CardRightContent = styled(RightContent)`
 
 export const Detail = styled.div`
   font-size: 12px;
-  color: #4d4d4d;
+  color: #999;
 `
 
 export const Footer = styled.div`
@@ -100,5 +109,5 @@ export const TagSpan = styled.span`
   font-size: 80%;
   border-radius: 3px;
   margin: 2px 5px;
-  font-size: 70%; 
+  font-size: 70%;
 `
