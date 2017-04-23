@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const BoardDiv = styled.div`
   background-color: #23719F;
   overflow-y: hidden;
-  padding: 5px;
+  padding: 3px;
   font: 14px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
   color: #393939;
   display: flex;
@@ -15,11 +15,10 @@ export const BoardDiv = styled.div`
 export const Section = styled.section`
   background-color: #E3E3E3;
   border-radius: 3px;
-  margin: 5px 5px;
-  padding: 10px;
-  min-width: 250px;
-  height: auto;
-  max-height: 95%;
+  margin: 3px;
+  padding: 4px;
+  width: 20%;
+  height: 95%;
   overflow-y: auto;
 `
 
