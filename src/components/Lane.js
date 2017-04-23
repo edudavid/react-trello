@@ -11,7 +11,7 @@ import { findDOMNode } from 'react-dom'
 
 const laneActions = require('../actions/LaneActions')
 
-const CARD_HEIGHT = 66
+const CARD_HEIGHT = 60
 const CARD_MARGIN = 10
 const OFFSET_HEIGHT = 15
 
